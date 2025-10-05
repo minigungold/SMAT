@@ -621,7 +621,7 @@ MonoBehaviour:
   hoveredCard: {fileID: 0}
   slotPrefab: {fileID: 2900286219673164414, guid: 50c14d199c736fa48994290ce3993de5, type: 3}
   cardsToSpawn: 5
-  interactionCartes: []
+  cards: []
 --- !u!222 &1167600114
 CanvasRenderer:
   m_ObjectHideFlags: 0
