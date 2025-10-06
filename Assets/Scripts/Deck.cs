@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.Rendering.GPUSort;
 
@@ -9,8 +10,9 @@ public class Deck : MonoBehaviour
     {
         get => Cartes; set => Cartes = value;
     }
+    private List<Carte> Discarte;
 
-    internal Stack<Carte> Default;
+    internal List<Carte> DefaultDeck;
 
     /// <summary>
     /// Mélange le deck
@@ -23,5 +25,29 @@ public class Deck : MonoBehaviour
             int j = UnityEngine.Random.Range(0, i + 1);
             (Cartes[i], Cartes[j]) = (Cartes[j], Cartes[i]);
         }
+    }
+
+    /// <summary>
+    /// réinitialize le deck a la version par défault
+    /// </summary>
+    public void Reinitailize()
+    {
+        Cartes = DefaultDeck;
+    }
+
+    public void Discarter(Carte carte)
+    {
+        Discarte.Add(carte);
+    }
+
+    /// <summary>
+    /// Pige une carte et enl'eve lacarte pigerdu deck
+    /// </summary>
+    /// <returns>la carte Piger</returns>
+    public Carte Piger()
+    {
+        Carte carte = Cartes.Last();
+        Cartes.Remove(carte);
+        return carte;
     }
 }
