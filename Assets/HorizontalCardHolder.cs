@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class HorizontalCardHolder : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [SerializeField] private InteractionCarte selectedCard;
     [SerializeReference] private InteractionCarte hoveredCard;
@@ -39,7 +38,7 @@ public class HorizontalCardHolder : MonoBehaviour
         {
             // Ajout des Event Listeners pour suivre les évènements de chaque cartes
             interactionCarte.PointerEnterEvent.AddListener(CardPointerEnter);
-            interactionCarte.PointerEnterEvent.AddListener(CardPointerExit);
+            interactionCarte.PointerExitEvent.AddListener(CardPointerExit);
             interactionCarte.BeginDragEvent.AddListener(BeginDrag);
             interactionCarte.EndDragEvent.AddListener(EndDrag);
 
@@ -72,6 +71,25 @@ public class HorizontalCardHolder : MonoBehaviour
 
 
 
+    }
+    private void BeginDrag(InteractionCarte interactionCarte)
+    {
+        selectedCard = interactionCarte;
+    }
+
+    void EndDrag(InteractionCarte interactionCarte)
+    {
+        selectedCard = null;
+    }
+
+    void CardPointerEnter(InteractionCarte interactionCarte)
+    {
+        hoveredCard = interactionCarte;
+    }
+
+    void CardPointerExit(InteractionCarte interactionCarte)
+    {
+        hoveredCard = null;
     }
 
     // Update is called once per frame
@@ -125,26 +143,7 @@ public class HorizontalCardHolder : MonoBehaviour
         bool swapIsRight = cards[index].ParentIndex() > selectedCard.ParentIndex();
     }
 
-    private void BeginDrag(InteractionCarte interactionCarte)
-    {
-        selectedCard = interactionCarte;
 
-    }
-
-    void EndDrag(InteractionCarte interactionCarte)
-    {
-        selectedCard = null;
-    }
-
-    void CardPointerEnter(InteractionCarte interactionCarte)
-    {
-        hoveredCard = interactionCarte;
-    }
-
-    void CardPointerExit(InteractionCarte interactionCarte)
-    {
-        hoveredCard = null;
-    }
 
 
 }

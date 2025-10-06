@@ -232,7 +232,7 @@ Canvas:
   m_GameObject: {fileID: 460431812}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -620,7 +620,7 @@ MonoBehaviour:
   selectedCard: {fileID: 0}
   hoveredCard: {fileID: 0}
   slotPrefab: {fileID: 2900286219673164414, guid: 50c14d199c736fa48994290ce3993de5, type: 3}
-  cardsToSpawn: 5
+  cardsToSpawn: 7
   cards: []
 --- !u!222 &1167600114
 CanvasRenderer:
