@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -16,6 +17,8 @@ public class InteractionCarte : MonoBehaviour,
 
     private Canvas canvas;
     private Image imageComponent;
+    [SerializeField] private bool instantiateVisual = true;
+    private VisualCardsHandler visualHandler;
     private Vector3 offset;
 
     private RectTransform rectTransform;
@@ -28,6 +31,10 @@ public class InteractionCarte : MonoBehaviour,
     public float selectionOffset = 50;
     private float pointerDownTime;
     private float pointerUpTime;
+
+    [Header("Visual")]
+    [SerializeField] private GameObject cardVisualPrefab;
+    [HideInInspector] public CardVisual cardVisual;
 
     [Header("States")]
     public bool isHovering;
@@ -45,10 +52,17 @@ public class InteractionCarte : MonoBehaviour,
 
 
 
-    private void Start()
+    void Start()
     {
         canvas = GetComponentInParent<Canvas>();
         imageComponent = GetComponent<Image>();
+
+        if (!instantiateVisual) 
+            return;
+
+        visualHandler = FindFirstObjectByType<VisualCardsHandler>();
+        cardVisual = Instantiate(cardVisualPrefab, visualHandler ? visualHandler.transform : canvas.transform).GetComponent<CardVisual>();
+        cardVisual.Initialize(this);
     }
 
     void Update()
@@ -156,10 +170,21 @@ public class InteractionCarte : MonoBehaviour,
         SelectEvent.Invoke(this, selected);
 
         if (selected)
-            //transform.localPosition += (cardVisual.transform.up * selectionOffset);
-            transform.localPosition += transform.up * selectionOffset;
+            transform.localPosition += (cardVisual.transform.up * selectionOffset);
         else
             transform.localPosition = Vector3.zero;
+    }
+
+    public void Deselect()
+    {
+        if (selected)
+        {
+            selected = false;
+            if (selected)
+                transform.localPosition += (cardVisual.transform.up * 50);
+            else
+                transform.localPosition = Vector3.zero;
+        }
     }
 
     public int SiblingAmount()
@@ -170,6 +195,11 @@ public class InteractionCarte : MonoBehaviour,
     {
         //Obtient l'index de l'objet par rapport aux autre dans PlayingCardGroup
         return transform.parent.CompareTag("Slot") ? transform.parent.GetSiblingIndex() : 0;
+    }
+
+    public float NormalizedPosition()
+    {
+        return transform.parent.CompareTag("Slot") ? ExtensionMethods.Remap((float)ParentIndex(), 0, (float)(transform.parent.parent.childCount - 1), 0, 1) : 0;
     }
 
 }
