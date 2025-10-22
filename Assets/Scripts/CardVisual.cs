@@ -67,6 +67,9 @@ public class CardVisual : MonoBehaviour
     private float curveRotationOffset;
     private Coroutine pressCoroutine;
 
+    private float distx;
+    private float disty;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -107,7 +110,9 @@ public class CardVisual : MonoBehaviour
         SmoothFollow();
         HandPositioning();
         FollowRotation();
-        //CardTilt();
+        CardTilt();
+
+        if (parentCard.isDragging) ShadowParallax();
     }
 
     private void HandPositioning()
@@ -147,8 +152,13 @@ public class CardVisual : MonoBehaviour
 
         tiltParent.eulerAngles = new Vector3(lerpX, lerpY, lerpZ);
     }
+    private void ShadowParallax()
+    {
+        distx = (canvas.transform.localPosition.x + cardTransform.position.x) / 30f;
+        disty = (canvas.transform.localPosition.y + cardTransform.position.y) / 30f;
 
-
+        visualShadow.localPosition = new Vector3(cardTransform.position.x + distx, cardTransform.position.y + disty, cardTransform.position.z);
+    }
     private void Select(InteractionCarte card, bool state)
     {
         DOTween.Kill(2, true);
@@ -162,11 +172,11 @@ public class CardVisual : MonoBehaviour
 
     public void Swap(float dir = 1)
     {
-        if (!swapAnimations)
+        if (swapAnimations)
             return;
 
         DOTween.Kill(2, true);
-        //shakeParent.DOPunchRotation((Vector3.forward * swapRotationAngle) * dir, swapTransition, swapVibrato, 1).SetId(3);
+        shakeParent.DOPunchRotation((Vector3.forward * swapRotationAngle) * dir, swapTransition, swapVibrato, 0).SetId(3);
     }
 
     private void BeginDrag(InteractionCarte card)
@@ -213,8 +223,10 @@ public class CardVisual : MonoBehaviour
     {
         if (scaleAnimations)
             transform.DOScale(scaleOnSelect, scaleTransition).SetEase(scaleEase);
+        canvas.overrideSorting = true;
 
-        visualShadow.localPosition += (-Vector3.up * shadowOffset);
+        //visualShadow.localPosition += (-Vector3.up * shadowOffset);
+        ShadowParallax();
         shadowCanvas.overrideSorting = false;
     }
 
