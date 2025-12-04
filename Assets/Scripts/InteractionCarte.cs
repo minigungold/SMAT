@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -16,9 +17,13 @@ public class InteractionCarte : MonoBehaviour,
 
     private Canvas canvas;
     private Image imageComponent;
+    [SerializeField] private bool instantiateVisual = true;
+    private VisualCardsHandler visualHandler;
     private Vector3 offset;
+    private UIRaycaster raycaster;
 
     private RectTransform rectTransform;
+
 
     [Header("Movement")]
     [SerializeField] private float moveSpeedLimit = 50;
@@ -29,10 +34,15 @@ public class InteractionCarte : MonoBehaviour,
     private float pointerDownTime;
     private float pointerUpTime;
 
+    [Header("Visual")]
+    [SerializeField] private GameObject cardVisualPrefab;
+    [HideInInspector] public CardVisual cardVisual;
+
     [Header("States")]
     public bool isHovering;
     public bool isDragging;
     [HideInInspector] public bool wasDragged;
+    public bool isPlayable;
 
     [Header("Events")]
     [HideInInspector] public UnityEvent<InteractionCarte> PointerEnterEvent;
@@ -45,10 +55,18 @@ public class InteractionCarte : MonoBehaviour,
 
 
 
-    private void Start()
+    void Start()
     {
         canvas = GetComponentInParent<Canvas>();
         imageComponent = GetComponent<Image>();
+        raycaster = GetComponent<UIRaycaster>();
+
+        if (!instantiateVisual)
+            return;
+
+        visualHandler = FindFirstObjectByType<VisualCardsHandler>();
+        cardVisual = Instantiate(cardVisualPrefab, visualHandler ? visualHandler.transform : canvas.transform).GetComponent<CardVisual>();
+        cardVisual.Initialize(this);
     }
 
     void Update()
@@ -61,6 +79,8 @@ public class InteractionCarte : MonoBehaviour,
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
             Vector2 velocity = direction * Mathf.Min(moveSpeedLimit, Vector2.Distance(transform.position, targetPosition) / Time.deltaTime);
             transform.Translate(velocity * Time.deltaTime);
+
+
         }
     }
 
@@ -70,7 +90,7 @@ public class InteractionCarte : MonoBehaviour,
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, -screenBounds.x, screenBounds.x);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, -screenBounds.y, screenBounds.y);
-        transform.position = new Vector3(clampedPosition.x, clampedPosition.y, 0);
+        transform.position = new Vector3(clampedPosition.x, clampedPosition.y, 89); //89 pour éviter d'avoir 9000 en z (s'adapte avec le canvas position.z)
     }
 
 
@@ -95,6 +115,7 @@ public class InteractionCarte : MonoBehaviour,
     {
         EndDragEvent.Invoke(this);
         isDragging = false;
+        isPlayable = false;
         canvas.GetComponent<GraphicRaycaster>().enabled = true;
         imageComponent.raycastTarget = true;
 
@@ -153,13 +174,25 @@ public class InteractionCarte : MonoBehaviour,
             return;
 
         selected = !selected;
+        isPlayable = false;
         SelectEvent.Invoke(this, selected);
 
         if (selected)
-            //transform.localPosition += (cardVisual.transform.up * selectionOffset);
-            transform.localPosition += transform.up * selectionOffset;
+            transform.localPosition += (cardVisual.transform.up * selectionOffset);
         else
             transform.localPosition = Vector3.zero;
+    }
+
+    public void Deselect()
+    {
+        if (selected)
+        {
+            selected = false;
+            if (selected)
+                transform.localPosition += (cardVisual.transform.up * 50);
+            else
+                transform.localPosition = Vector3.zero;
+        }
     }
 
     public int SiblingAmount()
@@ -170,6 +203,11 @@ public class InteractionCarte : MonoBehaviour,
     {
         //Obtient l'index de l'objet par rapport aux autre dans PlayingCardGroup
         return transform.parent.CompareTag("Slot") ? transform.parent.GetSiblingIndex() : 0;
+    }
+
+    public float NormalizedPosition()
+    {
+        return transform.parent.CompareTag("Slot") ? ExtensionMethods.Remap((float)ParentIndex(), 0, (float)(transform.parent.parent.childCount - 1), 0, 1) : 0;
     }
 
 }
