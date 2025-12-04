@@ -20,8 +20,10 @@ public class InteractionCarte : MonoBehaviour,
     [SerializeField] private bool instantiateVisual = true;
     private VisualCardsHandler visualHandler;
     private Vector3 offset;
+    private UIRaycaster raycaster;
 
     private RectTransform rectTransform;
+
 
     [Header("Movement")]
     [SerializeField] private float moveSpeedLimit = 50;
@@ -40,6 +42,7 @@ public class InteractionCarte : MonoBehaviour,
     public bool isHovering;
     public bool isDragging;
     [HideInInspector] public bool wasDragged;
+    public bool isPlayable;
 
     [Header("Events")]
     [HideInInspector] public UnityEvent<InteractionCarte> PointerEnterEvent;
@@ -56,8 +59,9 @@ public class InteractionCarte : MonoBehaviour,
     {
         canvas = GetComponentInParent<Canvas>();
         imageComponent = GetComponent<Image>();
+        raycaster = GetComponent<UIRaycaster>();
 
-        if (!instantiateVisual) 
+        if (!instantiateVisual)
             return;
 
         visualHandler = FindFirstObjectByType<VisualCardsHandler>();
@@ -75,6 +79,8 @@ public class InteractionCarte : MonoBehaviour,
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
             Vector2 velocity = direction * Mathf.Min(moveSpeedLimit, Vector2.Distance(transform.position, targetPosition) / Time.deltaTime);
             transform.Translate(velocity * Time.deltaTime);
+
+
         }
     }
 
@@ -84,7 +90,7 @@ public class InteractionCarte : MonoBehaviour,
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, -screenBounds.x, screenBounds.x);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, -screenBounds.y, screenBounds.y);
-        transform.position = new Vector3(clampedPosition.x, clampedPosition.y, 0);
+        transform.position = new Vector3(clampedPosition.x, clampedPosition.y, 89); //89 pour éviter d'avoir 9000 en z (s'adapte avec le canvas position.z)
     }
 
 
@@ -109,6 +115,7 @@ public class InteractionCarte : MonoBehaviour,
     {
         EndDragEvent.Invoke(this);
         isDragging = false;
+        isPlayable = false;
         canvas.GetComponent<GraphicRaycaster>().enabled = true;
         imageComponent.raycastTarget = true;
 
@@ -167,6 +174,7 @@ public class InteractionCarte : MonoBehaviour,
             return;
 
         selected = !selected;
+        isPlayable = false;
         SelectEvent.Invoke(this, selected);
 
         if (selected)

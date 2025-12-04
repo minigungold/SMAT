@@ -44,6 +44,7 @@ public class CardVisual : MonoBehaviour
     [SerializeField] private bool scaleAnimations = true;
     [SerializeField] private float scaleOnHover = 1.15f;
     [SerializeField] private float scaleOnSelect = 1.25f;
+    [SerializeField] private float scaleOnPlayable = 0.9f;
     [SerializeField] private float scaleTransition = .15f;
     [SerializeField] private Ease scaleEase = Ease.OutBack;
 
@@ -113,6 +114,16 @@ public class CardVisual : MonoBehaviour
         CardTilt();
 
         if (parentCard.isDragging) ShadowParallax();
+
+        if (scaleAnimations && parentCard.isPlayable)
+        {
+            transform.DOScale(scaleOnPlayable, scaleTransition).SetEase(scaleEase);
+        }
+        else
+        {
+            transform.DOScale(1, scaleTransition).SetEase(scaleEase);
+        }
+
     }
 
     private void HandPositioning()
@@ -224,6 +235,8 @@ public class CardVisual : MonoBehaviour
         if (scaleAnimations)
             transform.DOScale(scaleOnSelect, scaleTransition).SetEase(scaleEase);
         canvas.overrideSorting = true;
+
+
 
         //visualShadow.localPosition += (-Vector3.up * shadowOffset);
         ShadowParallax();
