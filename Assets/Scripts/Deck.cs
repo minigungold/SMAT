@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using static UnityEngine.Rendering.GPUSort;
 
-public class Deck : MonoBehaviour
+public class Deck
 {
     private List<Carte> Cartes;
     public List<Carte> cartes
@@ -49,5 +49,12 @@ public class Deck : MonoBehaviour
         Carte carte = Cartes.Last();
         Cartes.Remove(carte);
         return carte;
+    }
+
+    public Deck()
+    {
+        Cartes = new List<Carte>();
+        Discarte = new List<Carte>();
+        DefaultDeck = new List<Carte>();
     }
 }
