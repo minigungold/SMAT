@@ -20,7 +20,6 @@ public class InteractionCarte : MonoBehaviour,
     [SerializeField] private bool instantiateVisual = true;
     private VisualCardsHandler visualHandler;
     private Vector3 offset;
-    private UIRaycaster raycaster;
 
     private RectTransform rectTransform;
 
@@ -59,7 +58,6 @@ public class InteractionCarte : MonoBehaviour,
     {
         canvas = GetComponentInParent<Canvas>();
         imageComponent = GetComponent<Image>();
-        raycaster = GetComponent<UIRaycaster>();
 
         if (!instantiateVisual)
             return;

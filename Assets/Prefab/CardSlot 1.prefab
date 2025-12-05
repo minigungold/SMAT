@@ -47,10 +47,11 @@ GameObject:
   - component: {fileID: 4841545578622930913}
   - component: {fileID: 4976211328670943733}
   - component: {fileID: 4124511574631845884}
-  - component: {fileID: 8673472671026591719}
+  - component: {fileID: 2725062151405231354}
   - component: {fileID: 6503798910211604424}
   - component: {fileID: 5251457837583924892}
   - component: {fileID: 8520567389123860693}
+  - component: {fileID: 1360335120985956404}
   m_Layer: 5
   m_Name: 0
   m_TagString: Untagged
@@ -128,7 +129,7 @@ MonoBehaviour:
   SelectEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8673472671026591719
+--- !u!114 &2725062151405231354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,11 +138,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7682794026618310188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 383c849da3d0cdf45b8ee6839700c729, type: 3}
+  m_Script: {fileID: 11500000, guid: ac2fadc0dbb253449a10a1466ab5b179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
-  uiRaycaster: {fileID: 0}
+  carte: {fileID: 0}
+  targetObject: {fileID: 0}
 --- !u!114 &6503798910211604424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,3 +229,39 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!58 &1360335120985956404
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7682794026618310188}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 50

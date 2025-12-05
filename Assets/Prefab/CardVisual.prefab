@@ -284,6 +284,7 @@ MonoBehaviour:
   scaleAnimations: 1
   scaleOnHover: 1.15
   scaleOnSelect: 1.25
+  scaleOnPlayable: 0.9
   scaleTransition: 0.15
   scaleEase: 27
   selectPunchAmount: 20
@@ -294,7 +295,6 @@ MonoBehaviour:
   swapTransition: 0.15
   swapVibrato: 5
   curve: {fileID: 11400000, guid: 2b074c9c2f7714d4195290551eb69c4c, type: 2}
-  parallaxFactor: 0.05
 --- !u!223 &9053868540542665457
 Canvas:
   m_ObjectHideFlags: 0

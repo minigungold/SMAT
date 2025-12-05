@@ -33,4 +33,6 @@ public class PlayingCardSlot : MonoBehaviour,
     {
         isPlayable = false;
     }
+
+
 }
