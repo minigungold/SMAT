@@ -21,6 +21,7 @@ public class HorizontalCardHolder : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private int cardsToSpawn = 7;
     public List<InteractionCarte> cards;
+    private int cardCount = 0;
 
     bool isCrossing = false;
     [SerializeField] private bool tweenCardReturn = true;
@@ -35,9 +36,7 @@ public class HorizontalCardHolder : MonoBehaviour
 
         rect = GetComponent<RectTransform>();
         cards = GetComponentsInChildren<InteractionCarte>().ToList();
-
-        int cardCount = 0;
-
+        cardCount = 0;
         foreach (InteractionCarte interactionCarte in cards)
         {
             // Ajout des Event Listeners pour suivre les évènements de chaque cartes
@@ -63,8 +62,29 @@ public class HorizontalCardHolder : MonoBehaviour
                     cards[i].cardVisual.UpdateIndex(transform.childCount);
             }
         }
-
     }
+
+
+
+    public void InstantiateCard()
+    {
+        GameObject cardGameObject = Instantiate(slotPrefab, transform);
+
+        InteractionCarte card = cardGameObject.GetComponentInChildren<InteractionCarte>();
+        // Ajout des Event Listeners pour suivre les évènements de chaque cartes
+        card.PointerEnterEvent.AddListener(CardPointerEnter);
+        card.PointerExitEvent.AddListener(CardPointerExit);
+        card.BeginDragEvent.AddListener(BeginDrag);
+        card.EndDragEvent.AddListener(EndDrag);
+
+        //Change le nom de la carte
+        card.name = cardCount.ToString();
+        cardCount++;
+
+        cards.Add(card);
+    }
+
+
     private void BeginDrag(InteractionCarte interactionCarte)
     {
         selectedCard = interactionCarte;
@@ -95,6 +115,10 @@ public class HorizontalCardHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            InstantiateCard();
+        }
 
         if (selectedCard == null)
             return;
