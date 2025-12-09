@@ -186,7 +186,7 @@ RotationConstraint:
   m_Active: 1
   m_IsLocked: 1
   m_Sources:
-  - sourceTransform: {fileID: 2568743468373416406}
+  - sourceTransform: {fileID: 708092694176169294}
     weight: 1
 --- !u!223 &6946571720787115402
 Canvas:
@@ -275,12 +275,14 @@ MonoBehaviour:
   shakeParent: {fileID: 7021851587180862536}
   tiltParent: {fileID: 2568743468373416406}
   cardImage: {fileID: 6407377854244793510}
+  playingSlotTransform: {fileID: 0}
   followSpeed: 30
   rotationAmount: 20
   rotationSpeed: 20
   autoTiltAmount: 15
   manualTiltAmount: 20
   tiltSpeed: 20
+  rotationSpeedReturn: 0.2
   scaleAnimations: 1
   scaleOnHover: 1.15
   scaleOnSelect: 1.25

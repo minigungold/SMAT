@@ -2,33 +2,41 @@ using UnityEngine;
 
 public class UICollisionDetector : MonoBehaviour
 {
-    [SerializeField] private InteractionCarte carte;
+    [SerializeField] private InteractionCarte card;
+    [SerializeField] private CardVisual cardVisual;
     [SerializeField] public GameObject targetObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        carte = GetComponent<InteractionCarte>();
+        card = GetComponent<InteractionCarte>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("UI Element collided with: " + other.gameObject.name);
-        if (carte.isDragging)
+        if (card.isDragging && other.gameObject.GetComponent<PlayingCardSlot>())
         {
-            carte.isPlayable = true;
+            card.isPlayable = true;
             targetObject = other.gameObject;
+            card.playingSlotTransform = other.transform;
+            card.cardVisual.playingSlotTransform = other.transform;
+            //other.GetComponent<PlayingCardSlot>().currentCardObject = card.gameObject;
         }
     }
+
     void OnTriggerExit2D(Collider2D other)
     {
-        carte.isPlayable = false;
+        card.isPlayable = false;
         targetObject = null;
+        card.playingSlotTransform = null;
+        card.cardVisual.playingSlotTransform = null;
     }
-
 }
+
+

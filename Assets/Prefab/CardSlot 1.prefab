@@ -99,6 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instantiateVisual: 1
+  playingSlotTransform: {fileID: 0}
+  rectTransform: {fileID: 0}
+  positionZ: 89
   moveSpeedLimit: 50
   selected: 0
   selectionOffset: 50
@@ -108,6 +111,7 @@ MonoBehaviour:
   isDragging: 0
   wasDragged: 0
   isPlayable: 0
+  isPlaying: 0
   PointerEnterEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -121,6 +125,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   BeginDragEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDragEvent:
     m_PersistentCalls:
       m_Calls: []
   EndDragEvent:
@@ -141,7 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2fadc0dbb253449a10a1466ab5b179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carte: {fileID: 0}
+  card: {fileID: 0}
+  cardVisual: {fileID: 0}
   targetObject: {fileID: 0}
 --- !u!114 &6503798910211604424
 MonoBehaviour:
@@ -264,4 +272,4 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 50
+  m_Radius: 60

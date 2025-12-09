@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -23,12 +24,12 @@ public class CardVisual : MonoBehaviour
 
     [Header("References")]
     public Transform visualShadow;
-    private float shadowOffset = 20;
     private Vector2 shadowDistance;
     private Canvas shadowCanvas;
     [SerializeField] private Transform shakeParent;
-    [SerializeField] private Transform tiltParent;
-    [SerializeField] private Image cardImage;
+    [SerializeField] public Transform tiltParent;
+    [SerializeField] public Image cardImage;
+    public Transform playingSlotTransform;
 
     [Header("Follow Parameters")]
     [SerializeField] private float followSpeed = 30;
@@ -51,7 +52,7 @@ public class CardVisual : MonoBehaviour
     [Header("Select Parameters")]
     [SerializeField] private float selectPunchAmount = 20;
 
-    [Header("Hober Parameters")]
+    [Header("Hover Parameters")]
     [SerializeField] private float hoverPunchAngle = 5;
     [SerializeField] private float hoverTransition = .15f;
 
@@ -89,6 +90,7 @@ public class CardVisual : MonoBehaviour
         parentCard.PointerEnterEvent.AddListener(PointerEnter);
         parentCard.PointerExitEvent.AddListener(PointerExit);
         parentCard.BeginDragEvent.AddListener(BeginDrag);
+        parentCard.OnDragEvent.AddListener(Drag);
         parentCard.EndDragEvent.AddListener(EndDrag);
         parentCard.PointerDownEvent.AddListener(PointerDown);
         parentCard.PointerUpEvent.AddListener(PointerUp);
@@ -114,16 +116,10 @@ public class CardVisual : MonoBehaviour
         CardTilt();
 
         if (parentCard.isDragging) ShadowParallax();
-
-        if (scaleAnimations && parentCard.isPlayable)
+        if (parentCard.isPlaying)
         {
-            transform.DOScale(scaleOnPlayable, scaleTransition).SetEase(scaleEase);
+            cardImage.transform.rotation = playingSlotTransform.rotation;
         }
-        else
-        {
-            transform.DOScale(1, scaleTransition).SetEase(scaleEase);
-        }
-
     }
 
     private void HandPositioning()
@@ -163,13 +159,15 @@ public class CardVisual : MonoBehaviour
 
         tiltParent.eulerAngles = new Vector3(lerpX, lerpY, lerpZ);
     }
+
     private void ShadowParallax()
     {
-        distx = (canvas.transform.localPosition.x + cardTransform.position.x) / 30f;
-        disty = (canvas.transform.localPosition.y + cardTransform.position.y) / 30f;
+        distx = (Camera.main.transform.localPosition.x + cardTransform.position.x);
+        disty = (Camera.main.transform.localPosition.y + cardTransform.position.y);
 
         visualShadow.localPosition = new Vector3(cardTransform.position.x + distx, cardTransform.position.y + disty, cardTransform.position.z);
     }
+
     private void Select(InteractionCarte card, bool state)
     {
         DOTween.Kill(2, true);
@@ -196,6 +194,21 @@ public class CardVisual : MonoBehaviour
             transform.DOScale(scaleOnSelect, scaleTransition).SetEase(scaleEase);
 
         canvas.overrideSorting = true;
+        cardImage.transform.rotation = transform.rotation;
+        //cardImage.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutFlash);
+    }
+
+    private void Drag(InteractionCarte card)
+    {
+        if (scaleAnimations && parentCard.isPlayable)
+        {
+            transform.DOScale(scaleOnPlayable, scaleTransition).SetEase(scaleEase);
+        }
+        else
+        {
+            transform.DOScale(1, scaleTransition).SetEase(scaleEase);
+        }
+
     }
 
     private void EndDrag(InteractionCarte card)
@@ -203,6 +216,16 @@ public class CardVisual : MonoBehaviour
         canvas.overrideSorting = false;
         shadowCanvas.overrideSorting = false;
         transform.DOScale(1, scaleTransition).SetEase(scaleEase);
+
+        if (parentCard.isPlaying)
+        {
+            cardImage.transform.rotation = playingSlotTransform.rotation;
+            //visualShadow.rotation = cardImage.transform.rotation;
+        }
+        else
+        {
+            cardImage.transform.rotation = tiltParent.rotation; ;
+        }
     }
 
     private void PointerEnter(InteractionCarte card)
@@ -242,7 +265,6 @@ public class CardVisual : MonoBehaviour
         ShadowParallax();
         shadowCanvas.overrideSorting = false;
     }
-
 
 
 }

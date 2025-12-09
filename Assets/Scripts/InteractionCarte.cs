@@ -14,15 +14,17 @@ public class InteractionCarte : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler,
     IPointerDownHandler
 {
-
     private Canvas canvas;
     private Image imageComponent;
     [SerializeField] private bool instantiateVisual = true;
     private VisualCardsHandler visualHandler;
     private Vector3 offset;
+    private UICollisionDetector collisionDetector;
 
-    private RectTransform rectTransform;
+    public Transform playingSlotTransform;
+    public RectTransform rectTransform;
 
+    [SerializeField] private float positionZ = 89f;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeedLimit = 50;
@@ -42,6 +44,7 @@ public class InteractionCarte : MonoBehaviour,
     public bool isDragging;
     [HideInInspector] public bool wasDragged;
     public bool isPlayable;
+    public bool isPlaying;
 
     [Header("Events")]
     [HideInInspector] public UnityEvent<InteractionCarte> PointerEnterEvent;
@@ -49,6 +52,7 @@ public class InteractionCarte : MonoBehaviour,
     [HideInInspector] public UnityEvent<InteractionCarte, bool> PointerUpEvent;
     [HideInInspector] public UnityEvent<InteractionCarte> PointerDownEvent;
     [HideInInspector] public UnityEvent<InteractionCarte> BeginDragEvent;
+    [HideInInspector] public UnityEvent<InteractionCarte> OnDragEvent;
     [HideInInspector] public UnityEvent<InteractionCarte> EndDragEvent;
     [HideInInspector] public UnityEvent<InteractionCarte, bool> SelectEvent;
 
@@ -58,7 +62,8 @@ public class InteractionCarte : MonoBehaviour,
     {
         canvas = GetComponentInParent<Canvas>();
         imageComponent = GetComponent<Image>();
-
+        collisionDetector = GetComponent<UICollisionDetector>();
+        rectTransform = GetComponent<RectTransform>();
         if (!instantiateVisual)
             return;
 
@@ -71,14 +76,22 @@ public class InteractionCarte : MonoBehaviour,
     {
         ClampPosition();
 
-        if (isDragging)
+        if (isDragging && isPlaying == false)
         {
             Vector2 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - offset;
             Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
             Vector2 velocity = direction * Mathf.Min(moveSpeedLimit, Vector2.Distance(transform.position, targetPosition) / Time.deltaTime);
             transform.Translate(velocity * Time.deltaTime);
+        }
 
+        if (isDragging == false && isPlaying)
+        {
+            transform.position = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
+        }
 
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            ReturnToHand();
         }
     }
 
@@ -88,7 +101,7 @@ public class InteractionCarte : MonoBehaviour,
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, -screenBounds.x, screenBounds.x);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, -screenBounds.y, screenBounds.y);
-        transform.position = new Vector3(clampedPosition.x, clampedPosition.y, 89); //89 pour éviter d'avoir 9000 en z (s'adapte avec le canvas position.z)
+        transform.position = new Vector3(clampedPosition.x, clampedPosition.y, positionZ); //89 pour éviter d'avoir 9000 en z (s'adapte avec le canvas position.z)
     }
 
 
@@ -102,20 +115,26 @@ public class InteractionCarte : MonoBehaviour,
         imageComponent.raycastTarget = false;
 
         wasDragged = true;
+        isPlaying = false; // Reset le isPlaying lorsque qu'on drag la carte
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        OnDragEvent.Invoke(this);
+
         //rectTransform.anchoredPosition += eventData.delta;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         EndDragEvent.Invoke(this);
-        isDragging = false;
-        isPlayable = false;
         canvas.GetComponent<GraphicRaycaster>().enabled = true;
         imageComponent.raycastTarget = true;
+
+        isPlaying = isPlayable ? true : false;
+        isDragging = false;             //Continuer Ici
+
+        ChangePlayedCard();
 
         StartCoroutine(FrameWait());
 
@@ -171,6 +190,9 @@ public class InteractionCarte : MonoBehaviour,
         if (wasDragged)
             return;
 
+        if (isPlaying)
+            return;
+
         selected = !selected;
         isPlayable = false;
         SelectEvent.Invoke(this, selected);
@@ -206,6 +228,42 @@ public class InteractionCarte : MonoBehaviour,
     public float NormalizedPosition()
     {
         return transform.parent.CompareTag("Slot") ? ExtensionMethods.Remap((float)ParentIndex(), 0, (float)(transform.parent.parent.childCount - 1), 0, 1) : 0;
+    }
+
+    public void ReturnToHand()
+    {
+        isDragging = false;
+        isPlayable = false;
+        isPlaying = false;
+
+        cardVisual.cardImage.transform.rotation = cardVisual.tiltParent.rotation;
+
+        if (selected)
+        {
+            transform.localPosition = Vector3.zero + (transform.up * selectionOffset);
+        }
+        else
+        {
+            transform.localPosition = Vector3.zero;
+        }
+    }
+
+    public void ChangePlayedCard()
+    {
+        if (collisionDetector.targetObject != null && collisionDetector.targetObject.GetComponent<PlayingCardSlot>())
+        {
+            PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
+
+            if (playingCardSlot.currentCardObject != this.gameObject && playingCardSlot.isOccupied)
+            {
+                playingCardSlot.currentCardObject.GetComponent<InteractionCarte>().ReturnToHand();
+                playingCardSlot.currentCardObject = null;
+                playingCardSlot.isOccupied = false;
+            }
+
+            playingCardSlot.currentCardObject = this.gameObject;
+            playingCardSlot.isOccupied = true;
+        }
     }
 
 }
