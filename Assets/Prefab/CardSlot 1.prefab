@@ -151,6 +151,7 @@ MonoBehaviour:
   card: {fileID: 0}
   cardVisual: {fileID: 0}
   targetObject: {fileID: 0}
+  dist: 3
 --- !u!114 &6503798910211604424
 MonoBehaviour:
   m_ObjectHideFlags: 0

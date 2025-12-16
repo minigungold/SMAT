@@ -6,6 +6,7 @@ public class UICollisionDetector : MonoBehaviour
     [SerializeField] private CardVisual cardVisual;
     [SerializeField] public GameObject targetObject;
 
+    [SerializeField] private float dist = 2f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,8 +14,17 @@ public class UICollisionDetector : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        //RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + (dist - 1)), transform.TransformDirection(Vector2.up), dist);
+
+        //if (card.isDragging)
+        //{
+        //    Debug.DrawRay(new Vector2(transform.position.x, transform.position.y + (dist - 1)), transform.TransformDirection(Vector2.up) * dist, Color.yellow);
+
+        //    if (hit.collider != null && hit.collider.GetComponent<PlayingCardSlot>())
+        //        Debug.Log(hit.collider.name);
+        //}
 
     }
     void OnTriggerEnter2D(Collider2D other)
