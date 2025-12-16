@@ -35,12 +35,16 @@ public class GameManager : MonoBehaviour
     {
         deck.Reinitailize();
         deck.Shuffle();
-        grid.Add(new Vector2(0, 0), new Intersection());
+        Intersection firtsIntersection = new Intersection();
+        grid.Add(new Vector2(0, 0), firtsIntersection);
 
+        //distribue les premieres cartes
+        firtsIntersection.gauche.Carte = deck.Piger();
+        firtsIntersection.droite.Carte = deck.Piger();
     }
 
 
-    //A FAIRE, faire spawner un go et donner la bonne position
+ 
     public void placeCarte(Vector2 basePos, Carte baseCarte)
     {
         
@@ -53,7 +57,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (baseIntersection.bas.carte == baseCarte)
+        Intersection temp = new Intersection();
+        Vector2 newpos = basePos;
+        if (baseIntersection.bas.Carte == baseCarte)
         {
             Vector2 newPos = new Vector2(basePos.x, basePos.y - 1);
            
@@ -61,16 +67,44 @@ public class GameManager : MonoBehaviour
             {
                 return;
             }
-            Intersection temp = new Intersection();
-            temp.haut.carte = baseCarte;
-            grid.Add(newPos, temp);
+            
+            temp.haut.Carte = baseCarte;
 
         }
-        else if (baseIntersection.haut.carte == baseCarte)
+        else if (baseIntersection.haut.Carte == baseCarte)
         {
+            Vector2 newPos = new Vector2(basePos.x, basePos.y + 1);
 
+            if (grid.ContainsKey(newPos))
+            {
+                return;
+            }
+
+            temp.haut.Carte = baseCarte;
         }
+        else if (baseIntersection.droite.Carte == baseCarte)
+        {
+            Vector2 newPos = new Vector2(basePos.x - 1, basePos.y);
 
+            if (grid.ContainsKey(newPos))
+            {
+                return;
+            }
+
+            temp.gauche.Carte = baseCarte;
+        }
+        else
+        {
+            Vector2 newPos = new Vector2(basePos.x + 1, basePos.y);
+
+            if (grid.ContainsKey(newPos))
+            {
+                return;
+            }
+
+            temp.haut.Carte = baseCarte;
+        }
+            grid.Add(newpos, temp);
     }
     private void InitializeDefaultDeck()
     {
