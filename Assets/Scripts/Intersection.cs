@@ -3,26 +3,31 @@ using UnityEngine;
 public class Intersection : MonoBehaviour
 {
     [SerializeField]
-    private GameObject CardSlot;
+    private GameObject cardSlot;
 
     public CardSlot haut;
     public CardSlot bas;
     public CardSlot gauche;
     public CardSlot droite;
 
+    private void Awake()
+    {
+        transform.SetSiblingIndex(0);
+    }
+
     public Intersection()
     {
-        haut = Instantiate(CardSlot).GetComponent<CardSlot>();
-        bas = Instantiate(CardSlot).GetComponent<CardSlot>();
-        gauche = Instantiate(CardSlot).GetComponent<CardSlot>();
-        droite = Instantiate(CardSlot).GetComponent<CardSlot>();
+        //haut = Instantiate(cardSlot).GetComponent<CardSlot>();
+        //bas = Instantiate(cardSlot).GetComponent<CardSlot>();
+        //gauche = Instantiate(cardSlot).GetComponent<CardSlot>();
+        //droite = Instantiate(cardSlot).GetComponent<CardSlot>();
     }
     public Intersection(Carte carteBase, Intersection intersectionBase)
     {
-        haut = Instantiate(CardSlot).GetComponent<CardSlot>();
-        bas = Instantiate(CardSlot).GetComponent<CardSlot>();
-        gauche = Instantiate(CardSlot).GetComponent<CardSlot>();
-        droite = Instantiate(CardSlot).GetComponent<CardSlot>();
+        //haut = Instantiate(cardSlot).GetComponent<CardSlot>();
+        //bas = Instantiate(cardSlot).GetComponent<CardSlot>();
+        //gauche = Instantiate(cardSlot).GetComponent<CardSlot>();
+        //droite = Instantiate(cardSlot).GetComponent<CardSlot>();
 
         //met la carte de base dans l'intersection approprie selon ou est place la carte qui la cree
         if(intersectionBase.bas.Carte == carteBase)

@@ -13,6 +13,12 @@ public class GameManager : MonoBehaviour
     public Deck deck;
     public Dictionary<Vector2, Intersection> grid;
 
+    public HorizontalCardHolder cardHolder;
+
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] private GameObject intersectionPrefab;
+    [SerializeField] private Canvas canvas;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -35,14 +41,30 @@ public class GameManager : MonoBehaviour
     {
         deck.Reinitailize();
         deck.Shuffle();
-        Intersection firtsIntersection = new Intersection();
-        grid.Add(new Vector2(0, 0), firtsIntersection);
+        Intersection firstIntersection = Instantiate(intersectionPrefab, canvas.transform).GetComponent<Intersection>();
+        grid.Add(new Vector2(0, 0), firstIntersection);
+
+        //cardHolder.InstantiateCard();
+
+        //Instancier les premières cartes;
+        InstantiateCard(firstIntersection, firstIntersection.gauche);
+        InstantiateCard(firstIntersection, firstIntersection.haut);
+
 
         //distribue les premieres cartes
-        firtsIntersection.gauche.Carte = deck.Piger();
-        firtsIntersection.droite.Carte = deck.Piger();
+        firstIntersection.gauche.Carte = deck.Piger();
+        firstIntersection.droite.Carte = deck.Piger();
     }
 
+    public void InstantiateCard(Intersection intersection, CardSlot cardSlot)
+    {
+        GameObject cardGameObject = Instantiate(slotPrefab, intersection.transform);
+        cardGameObject.GetComponentInParent<Transform>().position = cardSlot.transform.position;
+        cardGameObject.GetComponentInChildren<InteractionCarte>().isPlaced = true;
+        cardGameObject.GetComponentInChildren<InteractionCarte>().playingSlotTransform = intersection.transform;
+        cardSlot.GetComponent<PlayingCardSlot>().enabled = false;
+        cardSlot.GetComponent<BoxCollider2D>().enabled = false;
+    }
 
  
     public void placeCarte(Vector2 basePos, Carte baseCarte)

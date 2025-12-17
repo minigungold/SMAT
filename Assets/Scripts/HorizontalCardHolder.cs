@@ -84,6 +84,26 @@ public class HorizontalCardHolder : MonoBehaviour
         cards.Add(card);
     }
 
+    public void DisableCard(InteractionCarte card)
+    {
+        card.BeginDragEvent.RemoveListener(BeginDrag);
+        card.PointerExitEvent.RemoveListener(CardPointerExit);
+        card.BeginDragEvent.RemoveListener(BeginDrag);
+        card.EndDragEvent.RemoveListener(EndDrag);
+    }
+
+    public void ReturnCardsToHand(InteractionCarte placedCard)
+    {
+        foreach (InteractionCarte interactionCarte in cards)
+        {
+            if(interactionCarte != placedCard)
+            {
+                //interactionCarte.ChangePlayedCard();
+                interactionCarte.ReturnToHand();
+            }
+        }
+    }
+
 
     private void BeginDrag(InteractionCarte interactionCarte)
     {

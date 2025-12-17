@@ -110,15 +110,21 @@ public class CardVisual : MonoBehaviour
     {
         if (!initialize || parentCard == null) return;
 
+        if (parentCard.isPlaced) return;
+
         SmoothFollow();
         HandPositioning();
         FollowRotation();
         CardTilt();
 
         if (parentCard.isDragging) ShadowParallax();
-        if (parentCard.isPlaying)
+        if (parentCard.isPlaying && playingSlotTransform != null)
         {
             cardImage.transform.rotation = playingSlotTransform.rotation;
+        }
+        else
+        {
+            cardImage.transform.rotation = transform.rotation;
         }
     }
 
@@ -224,7 +230,7 @@ public class CardVisual : MonoBehaviour
         }
         else
         {
-            cardImage.transform.rotation = tiltParent.rotation; ;
+            cardImage.transform.rotation = tiltParent.rotation;
         }
     }
 

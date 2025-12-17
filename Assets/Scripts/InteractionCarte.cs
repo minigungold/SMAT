@@ -45,6 +45,7 @@ public class InteractionCarte : MonoBehaviour,
     [HideInInspector] public bool wasDragged;
     public bool isPlayable;
     public bool isPlaying;
+    public bool isPlaced = false;
 
     [Header("Events")]
     [HideInInspector] public UnityEvent<InteractionCarte> PointerEnterEvent;
@@ -74,6 +75,15 @@ public class InteractionCarte : MonoBehaviour,
 
     void Update()
     {
+        if (isPlaced && playingSlotTransform != null)
+        {
+            GetComponentInParent<Transform>().localPosition = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
+            //transform.position = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
+            cardVisual.transform.position = transform.position;
+            gameObject.SetActive(false);
+            return;
+        }
+
         ClampPosition();
 
         if (isDragging && isPlaying == false)
@@ -84,7 +94,7 @@ public class InteractionCarte : MonoBehaviour,
             transform.Translate(velocity * Time.deltaTime);
         }
 
-        if (isDragging == false && isPlaying)
+        if (isDragging == false && isPlaying && playingSlotTransform != null)
         {
             transform.position = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
         }
@@ -131,9 +141,10 @@ public class InteractionCarte : MonoBehaviour,
         canvas.GetComponent<GraphicRaycaster>().enabled = true;
         imageComponent.raycastTarget = true;
 
-        isPlaying = isPlayable ? true : false;
         isDragging = false;             //Continuer Ici
+        isPlaying = isPlayable ? true : false;
 
+        GetComponentInParent<HorizontalCardHolder>().ReturnCardsToHand(this);
         ChangePlayedCard();
 
         StartCoroutine(FrameWait());
@@ -246,6 +257,16 @@ public class InteractionCarte : MonoBehaviour,
         {
             transform.localPosition = Vector3.zero;
         }
+
+        if (collisionDetector.targetObject != null && collisionDetector.targetObject.GetComponent<PlayingCardSlot>())
+        {
+            PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
+
+
+            playingCardSlot.currentCardObject = null;
+            playingCardSlot.isOccupied = false;
+
+        }
     }
 
     public void ChangePlayedCard()
@@ -254,12 +275,12 @@ public class InteractionCarte : MonoBehaviour,
         {
             PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
 
-            if (playingCardSlot.currentCardObject != this.gameObject && playingCardSlot.isOccupied)
-            {
-                playingCardSlot.currentCardObject.GetComponent<InteractionCarte>().ReturnToHand();
-                playingCardSlot.currentCardObject = null;
-                playingCardSlot.isOccupied = false;
-            }
+            //if (playingCardSlot.currentCardObject != this.gameObject && playingCardSlot.isOccupied)
+            //{
+            //    playingCardSlot.currentCardObject.GetComponent<InteractionCarte>().ReturnToHand();
+            //    playingCardSlot.currentCardObject = null;
+            //    playingCardSlot.isOccupied = false;
+            //}
 
             playingCardSlot.currentCardObject = this.gameObject;
             playingCardSlot.isOccupied = true;
