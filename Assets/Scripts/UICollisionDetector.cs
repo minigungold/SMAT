@@ -42,6 +42,15 @@ public class UICollisionDetector : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
+        if (other.gameObject.GetComponent<PlayingCardSlot>())
+        {
+            PlayingCardSlot playingCardSlot = other.gameObject.GetComponent<PlayingCardSlot>();
+            if (playingCardSlot.currentCardObject == this)
+            {
+                playingCardSlot.isOccupied = false;
+                playingCardSlot.currentCardObject = null;
+            }
+        }
         card.isPlayable = false;
         targetObject = null;
         card.playingSlotTransform = null;

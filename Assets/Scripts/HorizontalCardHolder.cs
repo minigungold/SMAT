@@ -96,7 +96,7 @@ public class HorizontalCardHolder : MonoBehaviour
     {
         foreach (InteractionCarte interactionCarte in cards)
         {
-            if(interactionCarte != placedCard)
+            if(interactionCarte != placedCard && placedCard.isPlayable)
             {
                 //interactionCarte.ChangePlayedCard();
                 interactionCarte.ReturnToHand();

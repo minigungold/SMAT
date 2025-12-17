@@ -110,7 +110,14 @@ public class CardVisual : MonoBehaviour
     {
         if (!initialize || parentCard == null) return;
 
-        if (parentCard.isPlaced) return;
+        if (parentCard.isPlaced)
+        {
+            if ((playingSlotTransform != null))
+            {
+                cardImage.transform.rotation = playingSlotTransform.rotation;
+            }
+            return;
+        }
 
         SmoothFollow();
         HandPositioning();
@@ -121,10 +128,6 @@ public class CardVisual : MonoBehaviour
         if (parentCard.isPlaying && playingSlotTransform != null)
         {
             cardImage.transform.rotation = playingSlotTransform.rotation;
-        }
-        else
-        {
-            cardImage.transform.rotation = transform.rotation;
         }
     }
 

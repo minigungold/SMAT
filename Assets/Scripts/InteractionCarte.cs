@@ -25,6 +25,8 @@ public class InteractionCarte : MonoBehaviour,
     public RectTransform rectTransform;
 
     [SerializeField] private float positionZ = 89f;
+    private Vector3 currentRotation;
+    public float zRotation;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeedLimit = 50;
@@ -75,11 +77,13 @@ public class InteractionCarte : MonoBehaviour,
 
     void Update()
     {
-        if (isPlaced && playingSlotTransform != null)
+        if (isPlaced && cardVisual != null && playingSlotTransform != null)
         {
             GetComponentInParent<Transform>().localPosition = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
             //transform.position = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
             cardVisual.transform.position = transform.position;
+            currentRotation = transform.eulerAngles;
+            cardVisual.cardImage.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, zRotation);
             gameObject.SetActive(false);
             return;
         }
@@ -123,6 +127,14 @@ public class InteractionCarte : MonoBehaviour,
         isDragging = true;
         canvas.GetComponent<GraphicRaycaster>().enabled = false;
         imageComponent.raycastTarget = false;
+
+        if (collisionDetector.targetObject != null && collisionDetector.targetObject.GetComponent<PlayingCardSlot>())
+        {
+            PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
+
+            playingCardSlot.isOccupied = false;
+            playingCardSlot.currentCardObject = null;
+        }
 
         wasDragged = true;
         isPlaying = false; // Reset le isPlaying lorsque qu'on drag la carte
@@ -274,13 +286,6 @@ public class InteractionCarte : MonoBehaviour,
         if (collisionDetector.targetObject != null && collisionDetector.targetObject.GetComponent<PlayingCardSlot>())
         {
             PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
-
-            //if (playingCardSlot.currentCardObject != this.gameObject && playingCardSlot.isOccupied)
-            //{
-            //    playingCardSlot.currentCardObject.GetComponent<InteractionCarte>().ReturnToHand();
-            //    playingCardSlot.currentCardObject = null;
-            //    playingCardSlot.isOccupied = false;
-            //}
 
             playingCardSlot.currentCardObject = this.gameObject;
             playingCardSlot.isOccupied = true;

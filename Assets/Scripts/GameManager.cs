@@ -59,9 +59,12 @@ public class GameManager : MonoBehaviour
     public void InstantiateCard(Intersection intersection, CardSlot cardSlot)
     {
         GameObject cardGameObject = Instantiate(slotPrefab, intersection.transform);
-        cardGameObject.GetComponentInParent<Transform>().position = cardSlot.transform.position;
+        cardGameObject.GetComponentInParent<RectTransform>().position = cardSlot.transform.position;
         cardGameObject.GetComponentInChildren<InteractionCarte>().isPlaced = true;
         cardGameObject.GetComponentInChildren<InteractionCarte>().playingSlotTransform = intersection.transform;
+        cardGameObject.GetComponentInChildren<InteractionCarte>().zRotation = cardSlot.transform.rotation.eulerAngles.z;
+        cardSlot.GetComponent<PlayingCardSlot>().isOccupied = true;
+        cardSlot.GetComponent<PlayingCardSlot>().currentCardObject = cardGameObject;
         cardSlot.GetComponent<PlayingCardSlot>().enabled = false;
         cardSlot.GetComponent<BoxCollider2D>().enabled = false;
     }

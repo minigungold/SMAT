@@ -235,8 +235,8 @@ MonoBehaviour:
   cardSlot: {fileID: 0}
   haut: {fileID: 2986255428074454318}
   bas: {fileID: 2604799602820926351}
-  gauche: {fileID: 525113176690491575}
-  droite: {fileID: 5065380532257099126}
+  gauche: {fileID: 5065380532257099126}
+  droite: {fileID: 525113176690491575}
 --- !u!1 &5382252412275962271
 GameObject:
   m_ObjectHideFlags: 0
