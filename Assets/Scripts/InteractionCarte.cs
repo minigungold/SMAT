@@ -22,6 +22,7 @@ public class InteractionCarte : MonoBehaviour,
     private UICollisionDetector collisionDetector;
 
     public Transform playingSlotTransform;
+    public PlayingCardSlot playingCardSlot;
     public RectTransform rectTransform;
 
     [SerializeField] private float positionZ = 89f;
@@ -154,7 +155,7 @@ public class InteractionCarte : MonoBehaviour,
         imageComponent.raycastTarget = true;
 
         isDragging = false;             //Continuer Ici
-        isPlaying = isPlayable ? true : false;
+        isPlaying = isPlayable;
 
         GetComponentInParent<HorizontalCardHolder>().ReturnCardsToHand(this);
         ChangePlayedCard();
@@ -255,6 +256,8 @@ public class InteractionCarte : MonoBehaviour,
 
     public void ReturnToHand()
     {
+        if (isPlaced) return;
+
         isDragging = false;
         isPlayable = false;
         isPlaying = false;

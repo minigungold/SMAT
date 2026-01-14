@@ -20,7 +20,7 @@ public class CardVisual : MonoBehaviour
     private Vector3 rotationDelta;
     private int savedIndex;
     Vector3 movementDelta;
-    private Canvas canvas;
+    public Canvas canvas;
 
     [Header("References")]
     public Transform visualShadow;

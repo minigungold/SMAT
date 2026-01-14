@@ -15,9 +15,11 @@ public class GameManager : MonoBehaviour
 
     public HorizontalCardHolder cardHolder;
 
+    [SerializeField] private GameObject placedCards;
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] private GameObject intersectionPrefab;
     [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject operatorSelector;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,7 +50,7 @@ public class GameManager : MonoBehaviour
 
         //Instancier les premières cartes;
         InstantiateCard(firstIntersection, firstIntersection.gauche);
-        InstantiateCard(firstIntersection, firstIntersection.haut);
+        InstantiateCard(firstIntersection, firstIntersection.droite);
 
 
         //distribue les premieres cartes
@@ -58,21 +60,45 @@ public class GameManager : MonoBehaviour
 
     public void InstantiateCard(Intersection intersection, CardSlot cardSlot)
     {
-        GameObject cardGameObject = Instantiate(slotPrefab, intersection.transform);
+        GameObject cardGameObject = Instantiate(slotPrefab, placedCards.transform);
+
         cardGameObject.GetComponentInParent<RectTransform>().position = cardSlot.transform.position;
         cardGameObject.GetComponentInChildren<InteractionCarte>().isPlaced = true;
         cardGameObject.GetComponentInChildren<InteractionCarte>().playingSlotTransform = intersection.transform;
         cardGameObject.GetComponentInChildren<InteractionCarte>().zRotation = cardSlot.transform.rotation.eulerAngles.z;
+
         cardSlot.GetComponent<PlayingCardSlot>().isOccupied = true;
-        cardSlot.GetComponent<PlayingCardSlot>().currentCardObject = cardGameObject;
+        cardSlot.GetComponent<PlayingCardSlot>().currentCardObject = cardGameObject.transform.GetChild(0).gameObject;
         cardSlot.GetComponent<PlayingCardSlot>().enabled = false;
         cardSlot.GetComponent<BoxCollider2D>().enabled = false;
     }
 
- 
+    public void PlayCard()
+    {
+
+        InteractionCarte playedCard = cardHolder.playedCard;
+        GameObject parent = cardHolder.playedCard.transform.parent.gameObject;
+
+        parent.transform.SetParent(placedCards.transform, true);
+        parent.transform.position = playedCard.playingSlotTransform.position;
+        playedCard.isPlaced = true;
+        playedCard.isPlaying = false;
+        playedCard.isPlayable = false;
+        playedCard.playingCardSlot.GetComponent<BoxCollider2D>().enabled = false;
+        playedCard.cardVisual.canvas.overrideSorting = true;
+        playedCard.cardVisual.canvas.sortingLayerID = -1;
+
+        cardHolder.DisableCard(cardHolder.playedCard);
+        cardHolder.cards.Remove(cardHolder.playedCard);
+        //Destroy(parent.gameObject);
+        cardHolder.playedCard = null;
+
+
+    }
+
     public void placeCarte(Vector2 basePos, Carte baseCarte)
     {
-        
+
 
         Intersection baseIntersection;
         grid.TryGetValue(basePos, out baseIntersection);
@@ -87,12 +113,12 @@ public class GameManager : MonoBehaviour
         if (baseIntersection.bas.Carte == baseCarte)
         {
             Vector2 newPos = new Vector2(basePos.x, basePos.y - 1);
-           
+
             if (grid.ContainsKey(newPos))
             {
                 return;
             }
-            
+
             temp.haut.Carte = baseCarte;
 
         }
@@ -129,7 +155,7 @@ public class GameManager : MonoBehaviour
 
             temp.haut.Carte = baseCarte;
         }
-            grid.Add(newpos, temp);
+        grid.Add(newpos, temp);
     }
     private void InitializeDefaultDeck()
     {

@@ -11,9 +11,10 @@ using UnityEngine.UIElements;
 
 public class HorizontalCardHolder : MonoBehaviour
 {
-
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private InteractionCarte selectedCard;
     [SerializeReference] private InteractionCarte hoveredCard;
+    [SerializeField] public InteractionCarte playedCard;
 
     [SerializeField] private GameObject slotPrefab;
     private RectTransform rect;
@@ -119,7 +120,11 @@ public class HorizontalCardHolder : MonoBehaviour
         rect.sizeDelta += Vector2.right;
         rect.sizeDelta -= Vector2.right;
 
+        //Played Card est utilisé par le Gamemanager pour le UI pour Jouer
+        playedCard = selectedCard.isPlayable ? selectedCard : playedCard;
         selectedCard = null;
+
+
     }
 
     void CardPointerEnter(InteractionCarte interactionCarte)

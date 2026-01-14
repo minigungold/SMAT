@@ -35,6 +35,7 @@ public class UICollisionDetector : MonoBehaviour
             card.isPlayable = true;
             targetObject = other.gameObject;
             card.playingSlotTransform = other.transform;
+            card.playingCardSlot = other.GetComponent<PlayingCardSlot>();
             card.cardVisual.playingSlotTransform = other.transform;
             //other.GetComponent<PlayingCardSlot>().currentCardObject = card.gameObject;
         }
@@ -51,9 +52,11 @@ public class UICollisionDetector : MonoBehaviour
                 playingCardSlot.currentCardObject = null;
             }
         }
+        if (card.isPlaced) return;
         card.isPlayable = false;
         targetObject = null;
         card.playingSlotTransform = null;
+        card.playingCardSlot = null;
         card.cardVisual.playingSlotTransform = null;
     }
 }
