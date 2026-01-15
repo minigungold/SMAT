@@ -92,7 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08a5c8756b3ee1448f529c5f14dfdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayable: 0
   isOccupied: 0
   currentCardObject: {fileID: 0}
 --- !u!114 &2242014745796833932

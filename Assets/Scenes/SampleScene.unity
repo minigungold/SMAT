@@ -248,19 +248,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49440065}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 207875759}
-  m_Father: {fileID: 460431816}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 960.00006, y: 540}
-  m_SizeDelta: {x: 1920.0001, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &111483494
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,6 +454,8 @@ MonoBehaviour:
   intersectionPrefab: {fileID: 1790652254625215734, guid: c16099ba1209664418c3734e345c1590, type: 3}
   canvas: {fileID: 49440070}
   operatorSelector: {fileID: 111483494}
+  offset1: 2
+  offset2: 1.1
 --- !u!4 &163050993
 Transform:
   m_ObjectHideFlags: 0
@@ -586,19 +588,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 280130278}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &280130278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,7 +768,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 49440071}
   - {fileID: 816399384}
   - {fileID: 1700445123}
   - {fileID: 1167600111}
@@ -2058,7 +2047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1303482625
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2464,7 +2453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08a5c8756b3ee1448f529c5f14dfdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayable: 0
   isOccupied: 0
   currentCardObject: {fileID: 0}
 --- !u!114 &1700445127
@@ -7585,4 +7573,5 @@ SceneRoots:
   - {fileID: 391457545}
   - {fileID: 1128529504}
   - {fileID: 460431816}
+  - {fileID: 49440071}
   - {fileID: 2038996011}

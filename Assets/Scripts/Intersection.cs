@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Intersection : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject cardSlot;
+    //private GameObject cardSlot;
 
     public CardSlot haut;
     public CardSlot bas;
@@ -13,6 +12,31 @@ public class Intersection : MonoBehaviour
     private void Awake()
     {
         transform.SetSiblingIndex(0);
+    }
+
+    public void DeactivateCardSlots()
+    {
+        haut.gameObject.SetActive(false);
+        bas.gameObject.SetActive(false);
+        gauche.gameObject.SetActive(false);
+        droite.gameObject.SetActive(false);
+    }
+    public void DeactivateCardSlots(CardSlot cardslot)  //Désactive tout les cardSlots sauf celui opposé à la carte placée
+    {
+        haut.gameObject.SetActive(false);
+        bas.gameObject.SetActive(false);
+        gauche.gameObject.SetActive(false);
+        droite.gameObject.SetActive(false);
+
+        cardslot.gameObject.SetActive(true);
+    }
+
+    public void ActivateCardSlots()
+    {
+        haut.gameObject.SetActive(true);
+        bas.gameObject.SetActive(true);
+        gauche.gameObject.SetActive(true);
+        droite.gameObject.SetActive(true);
     }
 
     public Intersection()

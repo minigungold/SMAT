@@ -420,7 +420,7 @@ MonoBehaviour:
   followSpeed: 30
   rotationAmount: 20
   rotationSpeed: 20
-  autoTiltAmount: 15
+  autoTiltAmount: 0
   manualTiltAmount: 20
   tiltSpeed: 20
   scaleAnimations: 1
@@ -449,10 +449,10 @@ Canvas:
   m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
+  m_OverridePixelPerfect: 1
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25

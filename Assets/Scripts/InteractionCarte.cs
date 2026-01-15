@@ -81,7 +81,7 @@ public class InteractionCarte : MonoBehaviour,
         if (isPlaced && cardVisual != null && playingSlotTransform != null)
         {
             GetComponentInParent<Transform>().localPosition = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
-            //transform.position = new Vector3(playingSlotTransform.position.x, playingSlotTransform.position.y, positionZ);
+            rectTransform.localPosition = new Vector3(0, 0, playingSlotTransform.position.z);
             cardVisual.transform.position = transform.position;
             currentRotation = transform.eulerAngles;
             cardVisual.cardImage.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, zRotation);

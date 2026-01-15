@@ -153,6 +153,8 @@ public class CardVisual : MonoBehaviour
     }
     private void CardTilt()
     {
+        if (parentCard.SiblingAmount() <= 1) return;
+
         savedIndex = parentCard.isDragging ? savedIndex : parentCard.ParentIndex();
         float sine = Mathf.Sin(Time.time + savedIndex) * (parentCard.isHovering ? .2f : 1);
         float cosine = Mathf.Cos(Time.time + savedIndex) * (parentCard.isHovering ? .2f : 1);
@@ -222,7 +224,10 @@ public class CardVisual : MonoBehaviour
 
     private void EndDrag(InteractionCarte card)
     {
-        canvas.overrideSorting = false;
+        if (!card.isPlayable)
+        {
+            canvas.overrideSorting = false;
+        }
         shadowCanvas.overrideSorting = false;
         transform.DOScale(1, scaleTransition).SetEase(scaleEase);
 
