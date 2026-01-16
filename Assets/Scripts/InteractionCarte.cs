@@ -133,7 +133,6 @@ public class InteractionCarte : MonoBehaviour,
         {
             PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
 
-            playingCardSlot.isOccupied = false;
             playingCardSlot.currentCardObject = null;
         }
 
@@ -279,7 +278,6 @@ public class InteractionCarte : MonoBehaviour,
 
 
             playingCardSlot.currentCardObject = null;
-            playingCardSlot.isOccupied = false;
 
         }
     }
@@ -291,7 +289,6 @@ public class InteractionCarte : MonoBehaviour,
             PlayingCardSlot playingCardSlot = collisionDetector.targetObject.GetComponent<PlayingCardSlot>();
 
             playingCardSlot.currentCardObject = this.gameObject;
-            playingCardSlot.isOccupied = true;
         }
     }
 

@@ -4,9 +4,9 @@ public class UICollisionDetector : MonoBehaviour
 {
     [SerializeField] private InteractionCarte card;
     [SerializeField] private CardVisual cardVisual;
-    [SerializeField] public GameObject targetObject;
+    public GameObject targetObject;
 
-    [SerializeField] private float dist = 2f;
+    //[SerializeField] private float dist = 2f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,7 +29,7 @@ public class UICollisionDetector : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("UI Element collided with: " + other.gameObject.name);
+        //Debug.Log("UI Element collided with: " + other.gameObject.name);
         if (card.isDragging && other.gameObject.GetComponent<PlayingCardSlot>())
         {
             card.isPlayable = true;
@@ -39,6 +39,16 @@ public class UICollisionDetector : MonoBehaviour
             card.cardVisual.playingSlotTransform = other.transform;
             //other.GetComponent<PlayingCardSlot>().currentCardObject = card.gameObject;
         }
+
+        //if (card.isPlaced && other.gameObject.GetComponent<PlayingCardSlot>())
+        //{
+        //    if (other.gameObject.GetComponent<PlayingCardSlot>() != card.playingCardSlot)
+        //    {
+        //        Debug.Log(other.gameObject.name);
+        //        other.gameObject.SetActive(false);
+        //        other.GetComponentInParent<Intersection>().DeactivateCardSlots();
+        //    }
+        //}
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -48,7 +58,6 @@ public class UICollisionDetector : MonoBehaviour
             PlayingCardSlot playingCardSlot = other.gameObject.GetComponent<PlayingCardSlot>();
             if (playingCardSlot.currentCardObject == this)
             {
-                playingCardSlot.isOccupied = false;
                 playingCardSlot.currentCardObject = null;
             }
         }

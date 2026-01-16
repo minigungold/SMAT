@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5065380532257099126}
   - component: {fileID: 3910274018988299677}
   - component: {fileID: 3182318752307499077}
+  - component: {fileID: 4814264297957421326}
   m_Layer: 5
   m_Name: Gauche
   m_TagString: Untagged
@@ -91,7 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08a5c8756b3ee1448f529c5f14dfdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayable: 0
   isOccupied: 0
   currentCardObject: {fileID: 0}
 --- !u!114 &5065380532257099126
@@ -151,7 +151,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 80, y: 120}
+  m_Size: {x: 150, y: 200}
   m_EdgeRadius: 0
 --- !u!50 &3182318752307499077
 Rigidbody2D:
@@ -180,6 +180,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!223 &4814264297957421326
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47328461512929903}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1790652254625215734
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce439e8cd88c41040845a733db490aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardSlot: {fileID: 0}
   haut: {fileID: 2986255428074454318}
   bas: {fileID: 2604799602820926351}
   gauche: {fileID: 5065380532257099126}
@@ -252,6 +274,7 @@ GameObject:
   - component: {fileID: 525113176690491575}
   - component: {fileID: 6677677182037142619}
   - component: {fileID: 2526895833369083058}
+  - component: {fileID: 1576916439625483683}
   m_Layer: 5
   m_Name: Droite
   m_TagString: Untagged
@@ -328,7 +351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08a5c8756b3ee1448f529c5f14dfdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayable: 0
   isOccupied: 0
   currentCardObject: {fileID: 0}
 --- !u!114 &525113176690491575
@@ -388,7 +410,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 80, y: 120}
+  m_Size: {x: 150, y: 200}
   m_EdgeRadius: 0
 --- !u!50 &2526895833369083058
 Rigidbody2D:
@@ -417,6 +439,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!223 &1576916439625483683
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5382252412275962271}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &5901271077686572964
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,6 +477,7 @@ GameObject:
   - component: {fileID: 2604799602820926351}
   - component: {fileID: 4992784408563906294}
   - component: {fileID: 7810964743138395452}
+  - component: {fileID: 837771118541279924}
   m_Layer: 5
   m_Name: Bas
   m_TagString: Untagged
@@ -508,7 +554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08a5c8756b3ee1448f529c5f14dfdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayable: 0
   isOccupied: 0
   currentCardObject: {fileID: 0}
 --- !u!114 &2604799602820926351
@@ -568,7 +613,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 80, y: 120}
+  m_Size: {x: 150, y: 200}
   m_EdgeRadius: 0
 --- !u!50 &7810964743138395452
 Rigidbody2D:
@@ -597,6 +642,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!223 &837771118541279924
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5901271077686572964}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &7425905623997856107
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,6 +680,7 @@ GameObject:
   - component: {fileID: 2986255428074454318}
   - component: {fileID: 5892078941237785128}
   - component: {fileID: 6152843323329544595}
+  - component: {fileID: 8866993692756756757}
   m_Layer: 5
   m_Name: Haut
   m_TagString: Untagged
@@ -688,7 +757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08a5c8756b3ee1448f529c5f14dfdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayable: 0
   isOccupied: 0
   currentCardObject: {fileID: 0}
 --- !u!114 &2986255428074454318
@@ -748,7 +816,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 80, y: 120}
+  m_Size: {x: 150, y: 200}
   m_EdgeRadius: 0
 --- !u!50 &6152843323329544595
 Rigidbody2D:
@@ -777,3 +845,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!223 &8866993692756756757
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7425905623997856107}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0

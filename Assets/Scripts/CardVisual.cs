@@ -130,7 +130,10 @@ public class CardVisual : MonoBehaviour
             cardImage.transform.rotation = playingSlotTransform.rotation;
         }
     }
-
+    public void RotateCard(float zRotation)
+    {
+        playingSlotTransform.rotation = Quaternion.Euler(0, 0, playingSlotTransform.eulerAngles.z + zRotation);
+    }
     private void HandPositioning()
     {
         curveYOffset = (curve.positioning.Evaluate(parentCard.NormalizedPosition()) * curve.positioningInfluence) * parentCard.SiblingAmount();

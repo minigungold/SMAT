@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 
         //cardHolder.InstantiateCard();
 
+        DeactivateOverride(firstIntersection);
         //Instancier les premières cartes;
         InstantiateCard(firstIntersection, firstIntersection.gauche);
         InstantiateIntersection(firstIntersection.gauche);
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
         firstIntersection.gauche.Carte = deck.Piger();
         firstIntersection.droite.Carte = deck.Piger();
 
-        
+
     }
 
     public void InstantiateCard(Intersection intersection, CardSlot cardSlot)
@@ -91,13 +92,14 @@ public class GameManager : MonoBehaviour
     {
         Intersection intersection = Instantiate(intersectionPrefab, canvas.transform).GetComponent<Intersection>();
         RectTransform rectTransform = intersection.GetComponentInParent<RectTransform>();
-
+        intersection.transform.SetAsLastSibling();
         string cardSlotName = cardSlot.name;
 
         Transform gaucheTransform = intersection.gauche.transform;
         Transform droiteTransform = intersection.droite.transform;
         Transform hautTransform = intersection.haut.transform;
         Transform basTransform = intersection.bas.transform;
+        CardSlot playedCardSlot = null;
 
         if (cardSlotName == "Haut" || cardSlotName == "Bas")   //Verticale
         {
@@ -112,6 +114,7 @@ public class GameManager : MonoBehaviour
                 intersection.bas.GetComponent<PlayingCardSlot>().currentCardObject = cardHolder.playedCard.gameObject;
                 intersection.DeactivateCardSlots(intersection.haut);
                 intersection.bas.GetComponent<BoxCollider2D>().enabled = false;
+                playedCardSlot = intersection.bas;
             }
             else
             {
@@ -119,6 +122,7 @@ public class GameManager : MonoBehaviour
                 intersection.haut.GetComponent<PlayingCardSlot>().currentCardObject = cardHolder.playedCard.gameObject;
                 intersection.DeactivateCardSlots(intersection.bas);
                 intersection.haut.GetComponent<BoxCollider2D>().enabled = false;
+                playedCardSlot = intersection.haut;
             }
         }
         else if (cardSlotName == "Gauche")
@@ -127,6 +131,7 @@ public class GameManager : MonoBehaviour
             intersection.droite.GetComponent<PlayingCardSlot>().currentCardObject = cardHolder.playedCard.gameObject;
             intersection.DeactivateCardSlots(intersection.gauche);
             intersection.droite.GetComponent<BoxCollider2D>().enabled = false;
+            playedCardSlot = intersection.droite;
         }
         else
         {
@@ -134,15 +139,36 @@ public class GameManager : MonoBehaviour
             intersection.gauche.GetComponent<PlayingCardSlot>().currentCardObject = cardHolder.playedCard.gameObject;
             intersection.DeactivateCardSlots(intersection.droite);
             intersection.gauche.GetComponent<BoxCollider2D>().enabled = false;
+            playedCardSlot = intersection.gauche;
         }
 
-
-
+        playedCardSlot.GetComponent<Canvas>().overrideSorting = false;
+        playedCardSlot.GetComponent<PlayingCardSlot>().isOccupied = true;
         Debug.Log(rectTransform.transform.position);
     }
 
+    private void DeactivateOverride(Intersection intersection)
+    {
+        if(intersection.haut.GetComponent<PlayingCardSlot>().currentCardObject != null)
+        {
+            intersection.haut.GetComponent<Canvas>().overrideSorting = false;
+        }
 
+        if (intersection.bas.GetComponent<PlayingCardSlot>().currentCardObject != null)
+        {
+            intersection.bas.GetComponent<Canvas>().overrideSorting = false;
+        }
 
+        if (intersection.gauche.GetComponent<PlayingCardSlot>().currentCardObject != null)
+        {
+            intersection.gauche.GetComponent<Canvas>().overrideSorting = false;
+        }
+
+        if (intersection.droite.GetComponent<PlayingCardSlot>().currentCardObject != null)
+        {
+            intersection.droite.GetComponent<Canvas>().overrideSorting = false;
+        }
+    }
 
     public void PlayCard()
     {
@@ -160,7 +186,7 @@ public class GameManager : MonoBehaviour
         playedCard.playingCardSlot.GetComponent<BoxCollider2D>().enabled = false;
 
         //Override sorting layer de la carte pour qu'elle soit derrière la main du joueur
-        //playedCard.cardVisual.canvas.overrideSorting = true;
+        playedCard.cardVisual.canvas.overrideSorting = true;
         playedCard.cardVisual.transform.SetAsLastSibling();
 
         cardHolder.DisableCard(cardHolder.playedCard);
@@ -168,14 +194,20 @@ public class GameManager : MonoBehaviour
         //Destroy(parent.gameObject);
 
         playedCard.playingCardSlot.GetComponentInParent<Intersection>().ActivateCardSlots();
-
+        playedCard.playingCardSlot.GetComponent<Canvas>().overrideSorting = false;
+        DeactivateOverride(playedCard.playingCardSlot.GetComponentInParent<Intersection>());
         //Active toutes les intersections touchants l'opération lorsqu'on place la carte
         InstantiateIntersection(playedCard.playingCardSlot.GetComponent<CardSlot>());
+        
 
         cardHolder.playedCard = null;
+    }
 
+    public void RotateCard()
+    {
 
-
+        cardHolder.playedCard.cardVisual.RotateCard(180);
+        
     }
 
     public void placeCarte(Vector2 basePos, Carte baseCarte)
