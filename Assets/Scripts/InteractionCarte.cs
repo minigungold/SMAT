@@ -49,6 +49,7 @@ public class InteractionCarte : MonoBehaviour,
     public bool isPlayable;
     public bool isPlaying;
     public bool isPlaced = false;
+    public bool isKept = false; //Pour retirer les cartes qui n'ont pas été inutilisées
 
     [Header("Events")]
     [HideInInspector] public UnityEvent<InteractionCarte> PointerEnterEvent;
@@ -292,4 +293,11 @@ public class InteractionCarte : MonoBehaviour,
         }
     }
 
+    public void DestroyCard()
+    {
+        playingCardSlot.ResetCardSlot();
+        //GetComponent<CardSlot>().Selectionable = true;
+        Destroy(cardVisual.gameObject);
+        Destroy(this);
+    }
 }

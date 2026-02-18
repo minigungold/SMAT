@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject intersectionPrefab;
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject operatorSelector;
+    [SerializeField] private List<InteractionCarte> cardsOnField;
 
     public float offset1 = 2.00f;
     public float offset2 = 1.10f;
@@ -86,6 +87,10 @@ public class GameManager : MonoBehaviour
 
         cardHolder.playedCard = interactionCarte;
         cardSlot.GetComponent<BoxCollider2D>().enabled = false;
+
+        //Add card to list of current cards on the field
+        cardsOnField.Add(interactionCarte);
+        cardSlot.Selectionable = false;
     }
 
     public void InstantiateIntersection(CardSlot cardSlot)
@@ -149,7 +154,7 @@ public class GameManager : MonoBehaviour
 
     private void DeactivateOverride(Intersection intersection)
     {
-        if(intersection.haut.GetComponent<PlayingCardSlot>().currentCardObject != null)
+        if (intersection.haut.GetComponent<PlayingCardSlot>().currentCardObject != null)
         {
             intersection.haut.GetComponent<Canvas>().overrideSorting = false;
         }
@@ -198,16 +203,41 @@ public class GameManager : MonoBehaviour
         DeactivateOverride(playedCard.playingCardSlot.GetComponentInParent<Intersection>());
         //Active toutes les intersections touchants l'opération lorsqu'on place la carte
         InstantiateIntersection(playedCard.playingCardSlot.GetComponent<CardSlot>());
-        
 
         cardHolder.playedCard = null;
+        cardsOnField.Add(playedCard);
+        playedCard.isKept = true;
+        
+        RemoveUnkeptCards();
     }
 
     public void RotateCard()
     {
-
         cardHolder.playedCard.cardVisual.RotateCard(180);
-        
+    }
+
+    public void RemoveUnkeptCards()
+    {
+
+        for (int i = 0; i < cardsOnField.Count;)
+        {
+            InteractionCarte card = cardsOnField[i];
+            if (card.isKept != true)
+            {
+                cardsOnField.Remove(card);
+                card.DestroyCard();
+                Intersection [] intersections = FindObjectsByType<Intersection>(FindObjectsSortMode.None);
+
+                for (int j = 0; j < intersections.Length; j++)
+                {
+                    intersections[j].IsEmpty();
+                }
+            }
+            else
+            {
+                i++;
+            }
+        }
     }
 
     public void placeCarte(Vector2 basePos, Carte baseCarte)

@@ -8,6 +8,13 @@ public class PlayingCardSlot : MonoBehaviour
     public bool isOccupied;
     public GameObject currentCardObject;
 
+    public void ResetCardSlot()
+    {
+        isOccupied = false;
+        currentCardObject = null;
+        GetComponent<BoxCollider2D>().enabled = true;
+    }
+
     //private void FixedUpdate()
     //{
     //    if (isOccupied)

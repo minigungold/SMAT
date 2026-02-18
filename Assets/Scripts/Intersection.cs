@@ -14,6 +14,15 @@ public class Intersection : MonoBehaviour
         transform.SetSiblingIndex(0);
     }
 
+    public void IsEmpty()
+    {
+        if (haut.GetComponent<PlayingCardSlot>().isOccupied && bas.GetComponent<PlayingCardSlot>().isOccupied &&
+            gauche.GetComponent<PlayingCardSlot>().isOccupied && droite.GetComponent<PlayingCardSlot>().isOccupied)
+        {
+            Destroy(this);
+        }
+    }
+
     public void DeactivateCardSlots()
     {
         haut.gameObject.SetActive(false);
@@ -54,7 +63,7 @@ public class Intersection : MonoBehaviour
         //droite = Instantiate(cardSlot).GetComponent<CardSlot>();
 
         //met la carte de base dans l'intersection approprie selon ou est place la carte qui la cree
-        if(intersectionBase.bas.Carte == carteBase)
+        if (intersectionBase.bas.Carte == carteBase)
         {
             haut.Carte = carteBase;
         }
@@ -64,7 +73,7 @@ public class Intersection : MonoBehaviour
         }
         else if (intersectionBase.droite.Carte == carteBase)
         {
-             gauche.Carte = carteBase;
+            gauche.Carte = carteBase;
         }
         else
         {
