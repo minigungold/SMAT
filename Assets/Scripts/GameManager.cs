@@ -26,6 +26,12 @@ public class GameManager : MonoBehaviour
     public float offset2 = 1.10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        // Paramètres pour tester sur android à 60 fps
+        QualitySettings.vSyncCount = 0; // Disable VSync to prevent conflicts
+        Application.targetFrameRate = 60; // Set the target frame rate to 60 FPS
+    }
     void Start()
     {
         if (instance != null)
@@ -60,9 +66,9 @@ public class GameManager : MonoBehaviour
         InstantiateCard(firstIntersection, firstIntersection.droite);
         InstantiateIntersection(firstIntersection.droite);
 
-        //distribue les premieres cartes
-        firstIntersection.gauche.Carte = deck.Piger();
-        firstIntersection.droite.Carte = deck.Piger();
+        ////distribue les premieres cartes
+        //firstIntersection.gauche.Carte = deck.Piger();
+        //firstIntersection.droite.Carte = deck.Piger();
 
 
     }
